@@ -1,0 +1,27 @@
+language: python
+
+env:
+  - TOXENV=py27
+  - TOXENV=py33
+  - TOXENV=py34
+  - DJANGO_VERSION=1.7.0
+  - DJANGO_VERSION=1.8.2
+
+before_script:
+  - psql -c 'create database test;' -U postgres
+
+install:
+  - pip install tox
+  - pip install -q Django==$DJANGO_VERSION
+  - python setup.py -q install
+
+script: py.test tests
+
+notifications:
+  email: false
+
+services:
+  - postgresql
+
+addons:
+  postgresql: '9.6'
